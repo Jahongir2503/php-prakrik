@@ -1,0 +1,22 @@
+{
+  "name": "jahongir2503/php-prakrik",
+  "description": "composer",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "jahongir",
+      "email": "jojo.isomidinov@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^7.4 | ^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Src\\": "core/Src/",
+      "": "app/"
+    }
+  }
+}
