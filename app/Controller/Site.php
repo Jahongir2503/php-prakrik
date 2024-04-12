@@ -60,6 +60,24 @@ class Site
     public function book_info(): string{
         return new View('site.book_info');
     }
+    public function readers_profile(): string{
+        return new View('site.readers_profile');
+    }
+    public function librarian_page(): string{
+        return new View('site.librarian_page');
+    }
+    public function add_readers(): string{
+        return new View('site.add_readers');
+    }
+    public function add_book(): string{
+        return new View('site.add_book');
+    }
+    public function give_book_Page(): string{
+        return new View('site.give_book_Page');
+    }
+    public function accept_the_book(): string{
+        return new View('site.accept_the_book');
+    }
 
 
 

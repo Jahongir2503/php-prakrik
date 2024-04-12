@@ -23,7 +23,7 @@
                 <label>Password</label>
                 <input type="password"  placeholder="Password">
                 <div class="button">
-                    <a href="<?= app()->route->getUrl('/book_page')?>">Войти</a>
+                    <a href="<?= app()->route->getUrl('/librarian_page')?>">Войти</a>
                 </div>
 
             </form>
