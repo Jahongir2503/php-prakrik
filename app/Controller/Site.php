@@ -23,12 +23,12 @@ class Site
         return new View('site.hello', ['message' => 'hello working']);
     }
 
-    public function signup(Request $request): string
+    public function addLibrarian(Request $request): string
     {
         if ($request->method === 'POST' && User::create($request->all())) {
-            app()->route->redirect('/go');
+            app()->route->redirect('/login');
         }
-        return new View('site.signup');
+        return new View('site.adminPage');
     }
 
     public function login(Request $request): string
@@ -50,6 +50,17 @@ class Site
         Auth::logout();
         app()->route->redirect('/hello');
     }
+    public function admin(): string{
+        return new View('site.adminPage');
+    }
+    public function book(): string{
+        return new View('site.book_page');
+    }
+
+    public function book_info(): string{
+        return new View('site.book_info');
+    }
+
 
 
 }
