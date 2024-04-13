@@ -23,7 +23,9 @@
         <a class="link" href="<?= app()->route->getUrl('/book_stat') ?>">Посмотреть Статистику</a>
         <a class="link" href="<?= app()->route->getUrl('/choose_book') ?>">Назначить Популярную Книгу</a>
         <a class="link" href="<?= app()->route->getUrl('/librarian_profile') ?>">Профиль</a>
+        <a href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
     </div>
+
 
     <div class="footer"></div>
 </div>

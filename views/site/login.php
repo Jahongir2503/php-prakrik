@@ -16,17 +16,20 @@
     </div>
     <div class="blok">
         <div class="main-content">
-            <form>
-                <h1>Вход</h1>
-                <label>Email address</label>
-                <input type="email"  placeholder="Enter email">
-                <label>Password</label>
-                <input type="password"  placeholder="Password">
-                <div class="button">
-                    <a href="<?= app()->route->getUrl('/librarian_page')?>">Войти</a>
-                </div>
 
+
+            <h3><?= app()->auth->user()->name ?? ''; ?></h3>
+            <?php
+            if (!app()->auth::check()):
+            ?>
+                <h3><?= $message ?? ''; ?></h3>
+            <form method="post">
+                <label>Логин <input type="text" name="login"></label>
+                <label>Пароль <input type="password" name="password"></label>
+                <button>Войти</button>
             </form>
+            <?php endif;
+            ?>
         </div>
     </div>
     <div class="footer"></div>
