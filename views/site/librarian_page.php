@@ -20,8 +20,9 @@
         <a class="link" href="<?= app()->route->getUrl('/give_book_Page') ?>">Выдать Книгу</a>
         <a class="link" href="<?= app()->route->getUrl('/accept_the_book') ?>">Принять Книгу</a>
         <a class="link" href="<?= app()->route->getUrl('/readers_profile') ?>">Выбрать Книгу</a>
-        <a class="link" href="<?= app()->route->getUrl('/readers_profile') ?>">Посмотреть Статистику</a>
-        <a class="link" href="<?= app()->route->getUrl('/readers_profile') ?>">Назначить Популярную Книгу</a>
+        <a class="link" href="<?= app()->route->getUrl('/book_stat') ?>">Посмотреть Статистику</a>
+        <a class="link" href="<?= app()->route->getUrl('/choose_book') ?>">Назначить Популярную Книгу</a>
+        <a class="link" href="<?= app()->route->getUrl('/librarian_profile') ?>">Профиль</a>
     </div>
 
     <div class="footer"></div>

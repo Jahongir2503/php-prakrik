@@ -78,6 +78,15 @@ class Site
     public function accept_the_book(): string{
         return new View('site.accept_the_book');
     }
+    public function book_stat(): string{
+        return new View('site.book_stat');
+    }
+    public function choose_book(): string{
+        return new View('site.choose_book');
+    }
+    public function librarian_profile(): string{
+        return new View('site.librarian_profile');
+    }
 
 
 
