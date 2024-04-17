@@ -2,11 +2,15 @@
 
 namespace Controller;
 
-use Model\Post;
+use Illuminate\Support\Str;
+use Model\Author;
+use Model\Book;
+use Model\reader;
 use Src\View;
 use Src\Request;
 use Model\User;
 use Src\Auth\Auth;
+use Src\Validator\Validator;
 
 
 class Site
@@ -17,13 +21,6 @@ class Site
         return new View('site.hello', ['message' => 'hello working']);
     }
 
-    public function addLibrarian(Request $request): string
-    {
-        if ($request->method === 'POST' && User::create($request->all())) {
-            app()->route->redirect('/login');
-        }
-        return new View('site.adminPage');
-    }
 
     public function login(Request $request): string
     {
@@ -39,6 +36,33 @@ class Site
         return new View('site.login', ['message' => 'Неправильные логин или пароль']);
     }
 
+    //функиця добавления библиотекарей
+    public function addLibrarian(Request $request): string
+    {
+        if ($request->method === 'POST') {
+
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+                'login' => ['required', 'unique:users,login'],
+                'password' => ['required']
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
+            ]);
+
+            if ($validator->fails()) {
+                return new View('site.admin',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
+
+            if (User::create($request->all())) {
+                app()->route->redirect('/login');
+            }
+        }
+        return new View('site.admin');
+    }
+
+
     public function logout(): void
     {
         Auth::logout();
@@ -47,10 +71,10 @@ class Site
 
     public function admin(): string
     {
-        return new View('site.adminPage');
+        return new View('site.admin');
     }
 
-    public function book(): string
+    public function book(Request $request): string
     {
         return new View('site.book_page');
     }
@@ -70,14 +94,42 @@ class Site
         return new View('site.librarian_page');
     }
 
-    public function add_readers(): string
+    public function add_readers(Request $request): string
     {
+        $libraryCardNumber = Str::random(6);
+
+
+        if ($request->method === 'POST') {
+            $readerData = $request->all();
+            $readerData['number_library_card'] = $libraryCardNumber;
+            if (Reader::create($readerData)) {
+                return new View('site.add_readers', ['message' => 'Вы успешно добавили читателя']);
+            }
+        }
         return new View('site.add_readers');
     }
 
-    public function add_book(): string
+    public function add_author(Request $request): string
     {
-        return new View('site.add_book');
+        if ($request->method === 'POST' && Author::create($request->all())) {
+            return new View('site.add_author', ['message' => 'Вы успешно добавли автора']);
+        }
+        return new View('site.add_author');
+    }
+
+
+    public function add_book(Request $request): string
+    {
+        $authors = Author::all();
+        if ($request->method === 'POST') {
+            {
+                $data = $request->all();
+                $data['new_edition'] = $data['new_edition'] === '1' ? true : false;
+                Book::create($data);
+            }
+            return new View('site.add_book', ['message' => 'Вы успешно добавили книгу', 'authors' => $authors]);
+        }
+        return new View('site.add_book', ['authors' => $authors]);
     }
 
     public function give_book_Page(): string

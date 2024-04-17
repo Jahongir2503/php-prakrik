@@ -16,25 +16,27 @@
     </div>
     <div class="blok">
         <div class="main-content">
-            <form>
+            <h3><?= $message ?? ''; ?></h3>
+            <form method="post">
                 <h1>Добавить Читателя</h1>
+                <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+                <input type="hidden" name="number_library_card" value="<?= $libraryCardNumber ?>">
                 <label for="">Фамилия</label>
-                <input type="text" placeholder="Фамилия" >
+                <input type="text" name="surname" placeholder="Фамилия" >
                 <label for="">Имя</label>
-                <input type="text" placeholder="Имя">
+                <input type="text" name="name" placeholder="Имя">
                 <label for="">Отчество</label>
-                <input type="text" placeholder="Отчество">
+                <input type="text" name="patronymic" placeholder="Отчество">
                 <label for="">Адрес</label>
-                <input type="text" placeholder="Адрес">
+                <input type="text" name="address" placeholder="Адрес">
                 <label for="">Номер телефона</label>
-                <input type="number" placeholder="Номер телефона">
+                <input type="number" name="phone_number" placeholder="Номер телефона">
                 <div class="button">
                     <button>Добавить Читателя</button>
                 </div>
             </form>
         </div>
     </div>
-    <div class="footer"></div>
 </div>
 
 </body>

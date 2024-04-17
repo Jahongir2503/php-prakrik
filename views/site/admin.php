@@ -16,22 +16,22 @@
     </div>
     <div class="blok">
         <div class="main-content">
+            <pre><?= $message ?? ''; ?></pre>
             <form method="post">
+                <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
                 <h1>Добавить Библиотекаря</h1>
                 <label>Имя</label>
-                <input type="text"  name="name" placeholder="Имя">
+                <input type="text" name="name" placeholder="Имя">
                 <label>Логин</label>
-                <input type="text" name="login"  placeholder="Логин">
+                <input type="text" name="login" placeholder="Логин">
                 <label>Пароль</label>
-                <input type="text" name="password" placeholder="Пароль">
+                <input type="password" name="password" placeholder="Пароль">
                 <div class="button">
-                   <button>Создать</button>
+                    <button>Создать</button>
                 </div>
-
             </form>
         </div>
     </div>
-    <div class="footer"></div>
 </div>
 
 </body>

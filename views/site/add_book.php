@@ -16,19 +16,31 @@
     </div>
     <div class="blok">
         <div class="main-content">
-            <form>
+            <h3><?= $message ?? ''; ?></h3>
+            <form method="post">
                 <h1>Добавить Книгу</h1>
-                <label for="">Название Книги</label>
-                <input type="text">
+                <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+                <label   >Название Книги</label>
+                <input name="name" type="text">
                 <label for="">Автор</label>
-                <input type="text">
-                <label for="">Год издания</label>
-                <input type="date">
-                <select>
-                    <option value="">--Please choose an option--</option>
-                    <option >Новое</option>
-                    <option >Старое</option>
+                <select name="author_id">
+                    <option value="">Выберите автора</option>
+                    <?php foreach($authors as $author) {
+                       echo "<option label='$author->surname'> $author->author_id </option>";
+                    } ?>
                 </select>
+                <label for="">Год издания</label>
+                <input name="year_of_publication" type="date">
+                <label for="">Укажите Цену</label>
+                <input name="price" type="number">
+                <label for="">Укажите Издание</label>
+                <select name="new_edition">
+                    <option value="">--Please choose an option--</option>
+                    <option label="Новое">1</option>
+                    <option label="Старое">0</option>
+                </select>
+                <label for="">Короткое Описание</label>
+                <input name="short_description" type="text">
                 <div class="button">
                     <button>Добавить Книгу</button>
                 </div>
@@ -36,7 +48,6 @@
             </form>
         </div>
     </div>
-    <div class="footer"></div>
 </div>
 
 </body>

@@ -57,5 +57,20 @@ class Auth
         Session::clear('id');
         return true;
     }
+    public static function checkRole(): bool
+    {
+        $userRole = self::user()::where('id', '=', $_SESSION['id'])->first()->role_id;
+        if ($userRole === 1) return true;
+        else return false;
+    }
+
+    //Генерация нового токена для CSRF
+    public static function generateCSRF(): string
+    {
+        $token = md5(time());
+        Session::set('csrf_token', $token);
+        return $token;
+    }
+
 
 }
