@@ -15,15 +15,11 @@
         <p>ReadMore</p>
     </div>
     <div class="reader_block">
-        <p>Читатель: Иванов Иван Иванович</p>
-        <p>Адрес:Пушкина 27</p>
-        <p>Номер телефона: +799891932324</p>
-        <p>Номер читательского билета:№54321</p>
-        <a href="<?= app()->route->getUrl('/book_page')?>">Просмотр книг</a>
+        <p>Читатель: <?= $reader->surname ?> <?= $reader->name ?> <?= $reader->patronymic ?></p>
+        <p>Номер читательского билета: <?= $reader->number_library_card ?></p>
+        <p>Адрес: <?= $reader->address ?></p>
+        <p>Номер телефона: <?= $reader->phone_number ?></p>
     </div>
-
-
 </div>
-
 </body>
 </html>

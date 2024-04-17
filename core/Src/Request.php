@@ -37,6 +37,14 @@ class Request
         return $_FILES;
     }
 
+    public function query($field)
+    {
+        if ($field !== null) {
+            return $_GET[$field] ?? null;
+        }
+        return $_GET;
+    }
+
     public function __get($key)
     {
         if (array_key_exists($key, $this->body)) {

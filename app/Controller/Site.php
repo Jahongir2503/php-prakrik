@@ -76,17 +76,44 @@ class Site
 
     public function book(Request $request): string
     {
-        return new View('site.book_page');
+        $books = Book::all();
+
+
+
+        return new View('site.book_page', ['books' => $books]);
     }
 
-    public function book_info(): string
+    public function getBookById($bookId)
     {
-        return new View('site.book_info');
+        return Book::find($bookId);
     }
 
-    public function readers_profile(): string
+    public function book_info(Request $request): string
     {
-        return new View('site.readers_profile');
+        $bookId = $request->query('book_id');
+        $book = $this->getBookById($bookId);
+        return new View('site.book_info', ['book' => $book]);
+    }
+
+    public function getReaderById($readerId)
+    {
+        return Reader::find($readerId);
+    }
+
+    public function readers_profile(Request $request): string
+    {
+        $readerId = $request->query('reader_id');
+        $reader = $this->getReaderById($readerId);
+
+        return new View('site.readers_profile', ['reader' => $reader]);
+    }
+
+
+    public function librarian_profile(): string
+    {
+        $readers = Reader::all();
+
+        return new View('site.librarian_profile', ['readers' => $readers]);
     }
 
     public function librarian_page(): string
@@ -124,10 +151,25 @@ class Site
         if ($request->method === 'POST') {
             {
                 $data = $request->all();
+                $file = $request->files();
+
+                $fileName = $file['img']['name'];
+                $path = ('/pop-it-mvc/public/media/' . $fileName);
+
+                if(move_uploaded_file($file['img']['tmp_name'],
+                    'media/' . $_FILES['img']['name'])) {
+                } else {
+                    echo 'Ошибка загрузки файла';
+                }
+
+
                 $data['new_edition'] = $data['new_edition'] === '1' ? true : false;
-                Book::create($data);
+                Book::create([
+                    ...$request->all(),
+                    'img' => $path
+                ]);
             }
-            return new View('site.add_book', ['message' => 'Вы успешно добавили книгу', 'authors' => $authors]);
+//            return new View('site.add_book', ['message' => 'Вы успешно добавили книгу', 'authors' => $authors]);
         }
         return new View('site.add_book', ['authors' => $authors]);
     }
@@ -152,10 +194,6 @@ class Site
         return new View('site.choose_book');
     }
 
-    public function librarian_profile(): string
-    {
-        return new View('site.librarian_profile');
-    }
 
 
 }

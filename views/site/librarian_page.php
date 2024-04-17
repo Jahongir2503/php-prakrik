@@ -15,14 +15,15 @@
         <p>ReadMore</p>
     </div>
     <div class="reader_block">
+        <a class="link" href="<?= app()->route->getUrl('/librarian_profile') ?>">Профиль</a>
         <a class="link" href="<?= app()->route->getUrl('/add_readers') ?>">Добавить читателя</a>
+        <a class="link" href="<?= app()->route->getUrl('/add_author') ?>">Добавить Автора</a>
         <a class="link" href="<?= app()->route->getUrl('/add_book') ?>">Добавить Книгу</a>
+        <a class="link" href="<?= app()->route->getUrl('/book_page') ?>">Выбрать Книгу</a>
         <a class="link" href="<?= app()->route->getUrl('/give_book_Page') ?>">Выдать Книгу</a>
         <a class="link" href="<?= app()->route->getUrl('/accept_the_book') ?>">Принять Книгу</a>
-        <a class="link" href="<?= app()->route->getUrl('/readers_profile') ?>">Выбрать Книгу</a>
         <a class="link" href="<?= app()->route->getUrl('/book_stat') ?>">Посмотреть Статистику</a>
         <a class="link" href="<?= app()->route->getUrl('/choose_book') ?>">Назначить Популярную Книгу</a>
-        <a class="link" href="<?= app()->route->getUrl('/librarian_profile') ?>">Профиль</a>
         <a href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
     </div>
 

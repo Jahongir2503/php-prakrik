@@ -13,11 +13,14 @@ class Book extends Model
     protected $table = 'book';
     public $timestamps = false;
     protected $fillable = [
+        'book_id',
         'author_id',
         'name',
         'year_of_publication',
         'price',
         'new_edition',
         'short_description',
+        'img'
     ];
+    protected $primaryKey = 'book_id';
 }

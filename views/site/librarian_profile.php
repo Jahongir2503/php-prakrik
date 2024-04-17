@@ -20,31 +20,13 @@
     </div>
 
     <div class="main">
-        <div class="readerInfo">
-            <h2>Читатель</h2>
-            <p>ФИО: Иванов Иван Иванович</p>
-            <p>Адрес: Пушкина 27</p>
-            <p>Номер телефона: +799891932324</p>
-            <p>Номер читательского билета: №54321</p>
-            <a href="#" class="returnLink">Выдать книгу</a>
-        </div>
-        <div class="issuedBooks">
-            <h2>Выданные книги</h2>
-            <div class="bookCard">
-                <h3>Капитанская дочка</h3>
-                <p>Автор: Пушкин А.С.</p>
-                <p>Дата выдачи: 2024-04-13</p>
-                <p>Дата сдачи: 2024-05-13</p>
+        <?php foreach($readers as $reader): ?>
+            <div class="readerInfo">
+                <h2>Читатель: <?= $reader->surname ?></h2>
+                <p>Номер читательского билета: <?= $reader->number_library_card ?></p>
+                <a href="<?= app()->route->getUrl('/readers_profile?reader_id=' . $reader->reader_id) ?>">Подробнее</a>
             </div>
-            <a href="#" class="returnLink">Сдать книгу</a>
-            <div class="bookCard">
-                <h3>Горе От Ума</h3>
-                <p>Автор: Грибоедов А.С.</p>
-                <p>Дата выдачи: 2024-04-12</p>
-                <p>Дата сдачи: 2024-05-13</p>
-            </div>
-            <a href="#" class="returnLink">Сдать книгу</a>
-        </div>
+        <?php endforeach; ?>
     </div>
 
 </div>

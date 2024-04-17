@@ -17,7 +17,7 @@
     <div class="blok">
         <div class="main-content">
             <h3><?= $message ?? ''; ?></h3>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <h1>Добавить Книгу</h1>
                 <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
                 <label   >Название Книги</label>
@@ -41,12 +41,20 @@
                 </select>
                 <label for="">Короткое Описание</label>
                 <input name="short_description" type="text">
+                <lable>Добавьте Обложку</lable>
+                <input type="file" name="img">
                 <div class="button">
                     <button>Добавить Книгу</button>
                 </div>
 
             </form>
         </div>
+
+        <?php
+
+
+        ?>
+
     </div>
 </div>
 

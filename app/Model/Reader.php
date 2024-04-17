@@ -20,4 +20,6 @@ class reader extends Model
         'address',
         'number_library_card'
     ];
+
+    protected $primaryKey = 'reader_id';
 }

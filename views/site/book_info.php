@@ -16,37 +16,23 @@
     </div>
     <div class="book_info">
         <div class="book_title">
-            <p>Капитанская дОчка</p>
+            <p><?= $book->name ?></p>
         </div>
 
         <div class="book_posotion">
             <div class="book_card">
                 <div class="car_img">
-                    <img src="/pop-it-mvc/public/media/kapitanskay_dochka.jpg" alt="gribi" width="350px" height="250px">
+                    <img src="<?= $book->img ?>" alt="<?= $book->name ?>" width="350px" height="250px">
                 </div>
                 <div class="boot_description">
-                    <p>Автор: Пушкин А.С.</p>
-                    <p>Год издания: 1833 год</p>
-                    <p>Издание: старое</p>
-                    <p>Цена по городу 300р.</p>
+                    <p>Автор: <?= $book->author_id ?></p>
+                    <p>Год издания: <?= $book->year_of_publication ?></p>
+                    <p>Издание: <?= $book->new_edition ? 'новое' : 'старое' ?></p>
+                    <p>Цена по городу <?= $book->price ?>р.</p>
                 </div>
             </div>
             <div class="book_text">
-                <p>“Капитанская дочка” — одно из самых <br>
-                    известных прозаических произведений А. С. <br>
-                    Пушкина. Сам писатель по жанровой<br>
-                    принадлежности отнёс его к повести, но при<br>
-                    этом “Капитанская дочка” обладает всеми<br>
-                    признаками романа: действие произведения<br>
-                    охватывает длительный промежуток времени<br>
-                    из жизни персонажей, у него есть признаки<br>
-                    мемуарной литературы, показаны важные<br>
-                    исторические события, в книге много<br>
-                    второстепенных лиц, которые не имеют<br>
-                    отношения к главной сюжетной линии и,<br>
-                    наконец, в течение повествования читатель<br>
-                    наблюдает за нравственной и духовной<br>
-                    эволюцией главных героев.</p>
+                <p><?= $book->short_description ?></p>
             </div>
         </div>
         <div class="button_position">
@@ -54,7 +40,5 @@
         </div>
     </div>
 </div>
-</div>
-
 </body>
 </html>
