@@ -20,13 +20,13 @@
             <form method="post" enctype="multipart/form-data">
                 <h1>Добавить Книгу</h1>
                 <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
-                <label   >Название Книги</label>
+                <label>Название Книги</label>
                 <input name="name" type="text">
                 <label for="">Автор</label>
-                <select name="author_id">
-                    <option value="">Выберите автора</option>
-                    <?php foreach($authors as $author) {
-                       echo "<option label='$author->surname'> $author->author_id </option>";
+                <select name="authors[]" multiple>
+                    <option value="">Выберите авторов</option>
+                    <?php foreach ($authors as $author) {
+                        echo "<option value='$author->author_id'>$author->surname</option>";
                     } ?>
                 </select>
                 <label for="">Год издания</label>
@@ -49,12 +49,9 @@
 
             </form>
         </div>
-
-        <?php
-
-
-        ?>
-
+        <div class="readerInfo">
+            <a class="backButton" href="javascript:history.go(-1)">Назад</a>
+        </div>
     </div>
 </div>
 

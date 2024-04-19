@@ -15,37 +15,41 @@
         <p>ReadMore</p>
     </div>
     <div class="blok">
+        <div class="readerInfo">
+            <a class="backButton" href="javascript:history.go(-1)">Назад</a>
+        </div>
         <div class="main-content">
-            <form>
-                <h1>Выдать Книгу</h1>
-                <label for="pet-select">Ввыбирите Номер читательского билета</label>
-                <select>
-                    <option value="">--Please choose an option--</option>
-                    <option >№54321</option>
-                    <option >№42321</option>
 
+            <form method="POST">
+                <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+                <h1>Выдать Книгу</h1>
+                <label for="reader-select">Выберите читателя</label>
+                <select name="reader_id">
+                    <option>-- Пожалуйста, выберите --</option>
+                    <?php foreach ($readers as $reader): ?>
+                        <option value="<?= $reader->reader_id ?>"><?= $reader->surname ?>
+                            №<?= $reader->number_library_card ?></option>
+                    <?php endforeach; ?>
                 </select>
-                <label for="pet-select">Выбирите книгу</label>
-                <select>
-                    <option value="">--Please choose an option--</option>
-                    <option >Капитанская Дочка</option>
-                    <option >Война и Мир</option>
+                <label for="book-select">Выберите книгу</label>
+                <select name="book_id">
+                    <option>-- Пожалуйста, выберите --</option>
+                    <?php foreach ($books as $book): ?>
+                        <option value="<?= $book->book_id ?>"><?= $book->name ?></option>
+                    <?php endforeach; ?>
                 </select>
                 <div class="admin_input">
-                    <label >Выдано</label>
-                    <input   type="date">
-                    <label >Сдавать</label>
-                    <input class="" type="date">
+                    <label for="date_of_issue">Дата выдачи</label>
+                    <input type="date" name="date_of_issue">
+                    <label for="return_date">Дата возврата</label>
+                    <input type="date" name="return_date">
                 </div>
-
                 <div class="button">
-                    <button>Выдать Книгу</button>
+                    <button type="submit">Выдать Книгу</button>
                 </div>
-
             </form>
         </div>
     </div>
 </div>
-
 </body>
 </html>

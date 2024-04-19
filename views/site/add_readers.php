@@ -15,6 +15,9 @@
         <p>ReadMore</p>
     </div>
     <div class="blok">
+        <div class="readerInfo">
+            <a class="backButton" href="javascript:history.go(-1)">Назад</a>
+        </div>
         <div class="main-content">
             <h3><?= $message ?? ''; ?></h3>
             <form method="post">

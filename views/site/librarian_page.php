@@ -21,14 +21,11 @@
         <a class="link" href="<?= app()->route->getUrl('/add_book') ?>">Добавить Книгу</a>
         <a class="link" href="<?= app()->route->getUrl('/book_page') ?>">Выбрать Книгу</a>
         <a class="link" href="<?= app()->route->getUrl('/give_book_Page') ?>">Выдать Книгу</a>
-        <a class="link" href="<?= app()->route->getUrl('/accept_the_book') ?>">Принять Книгу</a>
         <a class="link" href="<?= app()->route->getUrl('/book_stat') ?>">Посмотреть Статистику</a>
-        <a class="link" href="<?= app()->route->getUrl('/choose_book') ?>">Назначить Популярную Книгу</a>
         <a href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
     </div>
 
 
 </div>
-
 </body>
 </html>

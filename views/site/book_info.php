@@ -21,11 +21,12 @@
 
         <div class="book_posotion">
             <div class="book_card">
+                <!-- Отображение информации о книге -->
                 <div class="car_img">
                     <img src="<?= $book->img ?>" alt="<?= $book->name ?>" width="350px" height="250px">
                 </div>
                 <div class="boot_description">
-                    <p>Автор: <?= $book->author_id ?></p>
+                    <p>Автор(ы): <?php foreach ($authors as $author) echo $author->surname . ' '; ?></p>
                     <p>Год издания: <?= $book->year_of_publication ?></p>
                     <p>Издание: <?= $book->new_edition ? 'новое' : 'старое' ?></p>
                     <p>Цена по городу <?= $book->price ?>р.</p>
@@ -36,8 +37,11 @@
             </div>
         </div>
         <div class="button_position">
-            <button>Забронировать</button>
+                <a href="<?= app()->route->getUrl("/give_book_Page")?>">Забронировать</a>
         </div>
+    </div>
+    <div class="readerInfo">
+        <a class="backButton" href="javascript:history.go(-1)">Назад</a>
     </div>
 </div>
 </body>

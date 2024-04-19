@@ -14,31 +14,38 @@
     <div class="head">
         <p>ReadMore</p>
     </div>
-    <div class="blok">
-        <div class="main-content">
-            <form>
-                <h1>Принять Книгу</h1>
-                <label for="pet-select">Ввыбирите Номер читательского билета</label>
-                <select>
-                    <option value="">--Please choose an option--</option>
-                    <option >№54321</option>
-                    <option >№42321</option>
-
-                </select>
-                <label for="pet-select">Выбирите книгу</label>
-                <select>
-                    <option value="">--Please choose an option--</option>
-                    <option >Капитанская Дочка</option>
-                    <option >Война и Мир</option>
-                </select>
-                <div class="button">
-                    <button>Принять Книгу</button>
+    <div class="reader_info">
+        <div class="info">
+            <h2>Информация о читателе</h2>
+            <p>Читатель: <?= $reader->surname ?> <?= $reader->name ?> <?= $reader->patronymic ?></p>
+            <p>Номер читательского билета: <?= $reader->number_library_card ?></p>
+            <p>Адрес: <?= $reader->address ?></p>
+            <p>Номер телефона: <?= $reader->phone_number ?></p>
+        </div>
+        <div class="rented_books">
+            <h2>Арендованные книги</h2>
+            <?php foreach ($rentedBooks as $rental): ?>
+                <div class="book_card">
+                    <div class="book_details">
+                        <h3>Название Книги:</h3>
+                        <p><?= $rental->book->name ?></p>
+                    </div>
+                    <h4>Дата выдачи: <?= $rental->date_of_issue ?></h4>
+                    <h4>Дата сдачи: <?= $rental->return_date ?></h4>
+                    <h4>Статус: <?= $rental->status ? 'Сдана' : 'В аренде' ?></h4>
+                    <?php if (!$rental->status): ?>
+                        <form method="POST" action="/return_book">
+                            <input type="hidden" name="rental_id" value="<?= $rental->rental_id ?>">
+                            <button type="submit">Сдать книгу</button>
+                        </form>
+                    <?php endif; ?>
                 </div>
-
-            </form>
+            <?php endforeach; ?>
+        </div>
+        <div class="readerInfo">
+            <a class="backButton" href="javascript:history.go(-1)">Назад</a>
         </div>
     </div>
 </div>
-
 </body>
 </html>

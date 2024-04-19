@@ -34,3 +34,78 @@
     font-weight: bold;
     font-size: 50px;
 }
+.reader_info {
+    width: 80%;
+    margin-top: 50px;
+    display: flex;
+}
+
+.reader_info .info {
+    flex: 1;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-right: 20px;
+    font-size: 30px;
+}
+
+.rented_books {
+    flex: 1;
+}
+
+.rented_books h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.book_card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.book_card img {
+    max-width: 100px;
+    max-height: 150px;
+    margin-right: 10px;
+}
+
+.book_card p {
+    margin: 0;
+}
+
+.book_card .book_details {
+    display: flex;
+    align-items: center;
+}
+
+.readerInfo {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.readerInfo h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.readerInfo p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.readerInfo a {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.readerInfo a:hover {
+    background-color: #45a049;
+}

@@ -31,6 +31,9 @@
                 </div>
             </form>
         </div>
+        <div class="readerInfo">
+            <a class="backButton" href="javascript:history.go(-1)">Назад</a>
+        </div>
     </div>
 </div>
 

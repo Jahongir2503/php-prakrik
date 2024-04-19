@@ -14,44 +14,30 @@
     <div class="head">
         <p>ReadMore</p>
     </div>
+
     <div class="title">
-        <p>Выбор Популярной Книги</p>
+        <p>Назначить популярную книгу</p>
     </div>
     <div class="table">
         <table>
             <thead>
             <tr>
                 <th>Номер</th>
-                <th>Автор</th>
                 <th>Произведение</th>
-                <th>НАзначения Популярной книги</th>
+                <th>Количество аренд</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>Александр Пушкин</td>
-                <td>Евгений Онегин</td>
-                <td><a href="#">Назначить популярной книгой</a></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Лев Толстой</td>
-                <td>Война и мир</td>
-                <td><a href="#">Назначить популярной книгой</a></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Грибоедов Александр</td>
-                <td>Горе от ума</td>
-                <td><a href="#">Назначить популярной книгой</a></td>
-            </tr>
+            <?php foreach ($booksInfo as $index => $bookInfo): ?>
+                <tr>
+                    <td><?= $index + 1 ?></td>
+                    <td><?= $bookInfo['book']->name ?></td>
+                    <td><?= $bookInfo['rentals_count'] ?></td>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-
-
 </div>
-
 </body>
 </html>

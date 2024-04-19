@@ -15,8 +15,13 @@
         <p>ReadMore</p>
     </div>
     <div class="searchContainer">
-        <input type="text" id="searchInput" placeholder="Поиск">
-        <button id="searchButton">Найти</button>
+        <form method="GET" action="">
+            <input type="text" id="searchInput" name="searchInput" placeholder="Поиск" value="<?= $searchInput ?>">
+            <button id="searchButton">Найти</button>
+            <?php if ($searchInput): ?>
+                <a href="<?= $resetUrl ?>">Сбросить результаты</a>
+            <?php endif; ?>
+        </form>
     </div>
 
     <div class="main">
@@ -28,9 +33,10 @@
             </div>
         <?php endforeach; ?>
     </div>
-
+    <div class="readerInfo">
+        <a class="backButton" href="javascript:history.go(-1)">Назад</a>
+    </div>
 </div>
-
 </body>
 </html>
 

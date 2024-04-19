@@ -5,7 +5,9 @@ namespace Controller;
 use Illuminate\Support\Str;
 use Model\Author;
 use Model\Book;
+use Model\author_of_books;
 use Model\reader;
+use Model\Book_rentals;
 use Src\View;
 use Src\Request;
 use Model\User;
@@ -69,18 +71,12 @@ class Site
         app()->route->redirect('/login');
     }
 
-    public function admin(): string
-    {
-        return new View('site.admin');
-    }
 
     public function book(Request $request): string
     {
         $books = Book::all();
-
-
-
-        return new View('site.book_page', ['books' => $books]);
+        $popularBook = Book::where('is_popular', true)->first();
+        return new View('site.book_page', ['books' => $books, 'popularBook' => $popularBook]);
     }
 
     public function getBookById($bookId)
@@ -92,7 +88,11 @@ class Site
     {
         $bookId = $request->query('book_id');
         $book = $this->getBookById($bookId);
-        return new View('site.book_info', ['book' => $book]);
+
+        // Получение информации об авторах этой книги
+        $authors = $book->authors()->get();
+
+        return new View('site.book_info', ['book' => $book, 'authors' => $authors]);
     }
 
     public function getReaderById($readerId)
@@ -103,18 +103,33 @@ class Site
     public function readers_profile(Request $request): string
     {
         $readerId = $request->query('reader_id');
+        $id = $request->get('reader_id');
         $reader = $this->getReaderById($readerId);
 
-        return new View('site.readers_profile', ['reader' => $reader]);
+        // Получаем арендованные книги для конкретного читателя
+        $rentedBooks = Book_rentals::where('reader_id', $readerId)->with('book')->get();
+
+        return new View('site.readers_profile', ['reader' => $reader, 'rentedBooks' => $rentedBooks]);
     }
 
 
-    public function librarian_profile(): string
+
+    public function librarian_profile(Request $request): string
     {
-        $readers = Reader::all();
+        $searchInput = $request->query('searchInput');
 
-        return new View('site.librarian_profile', ['readers' => $readers]);
+        $readers = Reader::query();
+
+        if ($searchInput) {
+            $readers->where('surname', 'like', '%' . $searchInput . '%');
+        }
+
+        $filteredReaders = $readers->get();
+        $resetUrl = app()->route->getUrl('/librarian_profile');
+
+        return new View('site.librarian_profile', ['readers' => $filteredReaders, 'searchInput' => $searchInput, 'resetUrl' => $resetUrl]);
     }
+
 
     public function librarian_page(): string
     {
@@ -148,51 +163,127 @@ class Site
     public function add_book(Request $request): string
     {
         $authors = Author::all();
+
         if ($request->method === 'POST') {
-            {
-                $data = $request->all();
-                $file = $request->files();
+            $data = $request->all();
+            $file = $request->files();
 
-                $fileName = $file['img']['name'];
-                $path = ('/pop-it-mvc/public/media/' . $fileName);
+            $fileName = $file['img']['name'];
+            $path = ('/pop-it-mvc/public/media/' . $fileName);
 
-                if(move_uploaded_file($file['img']['tmp_name'],
-                    'media/' . $_FILES['img']['name'])) {
-                } else {
-                    echo 'Ошибка загрузки файла';
-                }
-
-
+            if (move_uploaded_file($file['img']['tmp_name'], 'media/' . $_FILES['img']['name'])) {
                 $data['new_edition'] = $data['new_edition'] === '1' ? true : false;
-                Book::create([
-                    ...$request->all(),
+
+                // Создание книги
+                $book = Book::create([
+                    'name' => $data['name'],
+                    'year_of_publication' => $data['year_of_publication'],
+                    'price' => $data['price'],
+                    'new_edition' => $data['new_edition'],
+                    'short_description' => $data['short_description'],
                     'img' => $path
                 ]);
+
+                // Связывание с авторами
+                if (isset($data['authors'])) {
+                    $book->authors()->attach($data['authors']);
+                }
+
+                return new View('site.add_book', ['message' => 'Вы успешно добавили книгу', 'authors' => $authors]);
+            } else {
+                echo 'Ошибка загрузки файла';
             }
-//            return new View('site.add_book', ['message' => 'Вы успешно добавили книгу', 'authors' => $authors]);
         }
+
         return new View('site.add_book', ['authors' => $authors]);
     }
 
-    public function give_book_Page(): string
+
+    public function give_book_Page(Request $request): string
     {
-        return new View('site.give_book_Page');
+        $date = $request->all();
+        $readers = Reader::all();
+        $books = Book::all();
+
+        if ($request->method === 'POST') {
+
+
+            if (Book_rentals::create([
+                'book_id' => $date['book_id'],
+                'reader_id' => $date['reader_id'],
+                'date_of_issue' => $date['date_of_issue'],
+                'return_date' => $date['return_date'],
+            ])) {
+                return new View('site.give_book_Page', ['readers' => $readers, 'books' => $books, 'message' => 'Книга успешно выдана']);
+            } else {
+                return new View('site.give_book_Page', ['readers' => $readers, 'books' => $books, 'error' => 'Ошибка при выдаче книги']);
+            }
+
+        }
+        return new View('site.give_book_Page', ['readers' => $readers, 'books' => $books]);
     }
 
-    public function accept_the_book(): string
-    {
-        return new View('site.accept_the_book');
+
+    public function accept_the_book(Request $request): string {
+
+        if ($request->method === 'POST') {
+            $id = $request->get('rental_id');
+            $rental = Book_rentals::find($id);
+            $rental->status = 1;
+            $rental->save();
+            app()->route->redirect('/readers_profile?reader_id='. $request->get('reader_id'));
+        }
+        return (new View())->render('site.readers_profile');
     }
 
     public function book_stat(): string
     {
-        return new View('site.book_stat');
+        $bookStats = Book_rentals::selectRaw('book_id, COUNT(*) as rentals_count')
+            ->groupBy('book_id')
+            ->orderByDesc('rentals_count')
+            ->get();
+
+        $booksInfo = [];
+        foreach ($bookStats as $bookStat) {
+            $book = Book::find($bookStat->book_id);
+            if ($book) {
+                $booksInfo[] = [
+                    'book' => $book,
+                    'rentals_count' => $bookStat->rentals_count,
+                ];
+            }
+        }
+        return (new View())->render('site.book_stat', ['booksInfo' => $booksInfo]);
     }
 
-    public function choose_book(): string
+    public function choosePopularBook(Request $request)
     {
-        return new View('site.choose_book');
+        $bookStats = Book_rentals::selectRaw('book_id, COUNT(*) as rentals_count')
+            ->groupBy('book_id')
+            ->orderByDesc('rentals_count')
+            ->get();
+
+        $booksInfo = [];
+        foreach ($bookStats as $bookStat) {
+            $book = Book::find($bookStat->book_id);
+            if ($book) {
+                $booksInfo[] = [
+                    'book' => $book,
+                    'rentals_count' => $bookStat->rentals_count,
+                ];
+            }
+        }
+
+
+        if ($request->method === 'POST') {
+//            Book::where('is_popular', 1)->get()
+            $book = Book::find($request->get('book_id'));
+            $book->is_popular = 1;
+            $book->save();
+            return (new View())->render('site.book_stat', ['booksInfo' => $booksInfo, 'message' => 'Популярная книга успешно назначена']);
+        }
     }
+
 
 
 

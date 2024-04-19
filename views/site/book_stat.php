@@ -15,60 +15,44 @@
         <p>ReadMore</p>
     </div>
     <div class="title">
-        <p>Статистика Популярный Книг</p>
-        <div class="selector">
-            <p>Посмотреть за:</p>
-            <select>
-                <option>Январь</option>
-                <option>Февраль</option>
-                <option>Март</option>
-                <option>Апрель</option>
-                <option>Май</option>
-                <option>Июнь</option>
-                <option>Июль</option>
-                <option>Август</option>
-                <option>Сентябрь</option>
-                <option>Октябрь</option>
-                <option>Ноябрь</option>
-                <option>Декабрь</option>
-            </select>
-        </div>
+        <p>Статистика Популярных Книг</p>
     </div>
+    <?php
+        if (isset($message)) {
+            echo "<h4>$message</h4>";
+        }
+    ?>
     <div class="table">
         <table>
             <thead>
             <tr>
                 <th>Номер</th>
-                <th>Автор</th>
                 <th>Произведение</th>
-                <th>Выдано</th>
+                <th>Количество аренд</th>
+                <th>Назначить книгу популярной</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>Александр Пушкин</td>
-                <td>Евгений Онегин</td>
-                <td>10</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Лев Толстой</td>
-                <td>Война и мир</td>
-                <td>8</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Грибоедов Александр</td>
-                <td>Горе от ума</td>
-                <td>7</td>
-            </tr>
+            <?php foreach ($booksInfo as $index => $bookInfo): ?>
+                <tr>
+                    <td><?= $index + 1 ?></td>
+                    <td><?= $bookInfo['book']->name ?></td>
+                    <td><?= $bookInfo['rentals_count'] ?></td>
+                    <td>
+                        <form action="<?= app()->route->getUrl('/choose_popular_book')?>" method="post">
+                            <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+                            <input type="hidden" name="book_id" value="<?= $bookInfo['book']->book_id ?>">
+                            <button>Назначить популярной</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-
-
+    <div class="readerInfo">
+        <a class="backButton" href="javascript:history.go(-1)">Назад</a>
+    </div>
 </div>
-
 </body>
 </html>
