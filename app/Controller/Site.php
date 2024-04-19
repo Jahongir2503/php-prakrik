@@ -89,7 +89,6 @@ class Site
         $bookId = $request->query('book_id');
         $book = $this->getBookById($bookId);
 
-        // Получение информации об авторах этой книги
         $authors = $book->authors()->get();
 
         return new View('site.book_info', ['book' => $book, 'authors' => $authors]);
@@ -106,7 +105,6 @@ class Site
         $id = $request->get('reader_id');
         $reader = $this->getReaderById($readerId);
 
-        // Получаем арендованные книги для конкретного читателя
         $rentedBooks = Book_rentals::where('reader_id', $readerId)->with('book')->get();
 
         return new View('site.readers_profile', ['reader' => $reader, 'rentedBooks' => $rentedBooks]);
@@ -142,6 +140,21 @@ class Site
 
 
         if ($request->method === 'POST') {
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+                'surname' => ['required'],
+                'patronymic' => ['required'],
+                'phone_number' => ['required'],
+                'address' => ['required']
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
+            ]);
+
+            if ($validator->fails()) {
+                return new View('site.admin',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
             $readerData = $request->all();
             $readerData['number_library_card'] = $libraryCardNumber;
             if (Reader::create($readerData)) {
@@ -154,6 +167,19 @@ class Site
     public function add_author(Request $request): string
     {
         if ($request->method === 'POST' && Author::create($request->all())) {
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+                'surname' => ['required', 'unique:users,login'],
+                'patronymic' => ['required']
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
+            ]);
+
+            if ($validator->fails()) {
+                return new View('site.admin',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
             return new View('site.add_author', ['message' => 'Вы успешно добавли автора']);
         }
         return new View('site.add_author');
@@ -167,6 +193,22 @@ class Site
         if ($request->method === 'POST') {
             $data = $request->all();
             $file = $request->files();
+
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+                'year_of_publication' => ['required'],
+                'price' => ['required'],
+                'new_edition' => ['required'],
+                'short_description' => ['required'],
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
+            ]);
+
+            if ($validator->fails()) {
+                return new View('site.admin',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
 
             $fileName = $file['img']['name'];
             $path = ('/pop-it-mvc/public/media/' . $fileName);
